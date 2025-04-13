@@ -1,0 +1,63 @@
+@import "../shared/styles/colors.css";
+
+.article__card {
+  display: flex;
+  justify-content: center;
+  height: 252px;
+  padding: 24px;
+  border-radius: 20px;
+  background-color: var(--color-white);
+  max-width: 572px;
+  flex-direction: column;
+}
+
+.article__card__date {
+  display: flex;
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.article__card__title {
+  display: flex;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-black-60);
+  padding-bottom: 16px;
+}
+
+.article__card__description {
+  color: var(--color-gray);
+  text-align: left;
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.article__card__author {
+  width: 124px;
+  height: 34px;
+  font-size: 14px;
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  border-radius: 10px;
+  font-weight: 600;
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 540px) {
+  .article__card__author {
+    margin-top: 28px;
+  }
+}

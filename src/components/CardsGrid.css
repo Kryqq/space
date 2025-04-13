@@ -1,0 +1,25 @@
+@import "../shared/styles/colors.css";
+
+.article__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(auto, 1fr));
+  justify-content: center;
+  gap: 20px;
+  padding: 0px 20px;
+  background-color: var(--color-main);
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.article__grid__item {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1000px) {
+  .article__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
