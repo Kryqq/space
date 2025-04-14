@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "../apiMock";
-import "./CardsGrid.css";
 import { Card } from "./Card";
+import "./CardsGrid.css";
 
 type Card = {
   id: number;
@@ -12,8 +12,30 @@ type Card = {
   author: string;
 };
 
-export const Cards: React.FC = () => {
+interface Props {
+  filterByAuthor: string | null;
+  dateFrom: string;
+  dateTo: string;
+}
+
+export const Cards: React.FC<Props> = ({
+  filterByAuthor,
+  dateFrom,
+  dateTo,
+}) => {
   const [cards, setCards] = useState<Card[]>([]);
+
+  const handleFilter = (card: Card) => {
+    const matchesAuthor =
+      filterByAuthor === "Все авторы" ||
+      filterByAuthor === null ||
+      card.author === filterByAuthor;
+
+    const matchesDate =
+      (!dateFrom || card.date >= dateFrom) && (!dateTo || card.date <= dateTo);
+
+    return matchesAuthor && matchesDate;
+  };
 
   useEffect(() => {
     (async () => {
@@ -30,7 +52,7 @@ export const Cards: React.FC = () => {
 
   return (
     <div className="article__grid">
-      {cards.map((card) => (
+      {cards.filter(handleFilter).map((card) => (
         <div className="article__grid__item" key={card.id}>
           <Card
             date={card.date}

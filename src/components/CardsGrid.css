@@ -23,3 +23,15 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: var(--color-gray);
+  background-color: var(--color-white);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}

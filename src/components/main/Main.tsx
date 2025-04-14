@@ -3,11 +3,17 @@ import user from "@assets/icons/user.svg";
 import { useEffect, useRef, useState } from "react";
 import { Cards } from "../Cards";
 
+import axios from "axios";
 import styles from "./Main.module.css";
 
 export const Main = () => {
   const [activeDot, setActiveDot] = useState(0);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [authors, setAuthors] = useState<string[]>([]);
+  const [filterByAuthor, setFilterByAuthor] = useState<string | null>(null);
+
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
 
   const toggleSelect = () => {
     setIsSelectOpen(!isSelectOpen);
@@ -34,6 +40,24 @@ export const Main = () => {
   const handleSetActvie = (index: number) => () => {
     setActiveDot(index);
   };
+
+  const handleFilterByAuthor = (author: string) => () => {
+    setFilterByAuthor(author);
+    setIsSelectOpen(false);
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.get("/api/authors");
+        setAuthors(res.data);
+      } catch (error) {
+        console.log(error);
+        setAuthors([]);
+        alert("Ошибка при загрузке данных");
+      }
+    })();
+  }, []);
 
   return (
     <main>
@@ -72,7 +96,7 @@ export const Main = () => {
             >
               <div className={styles.author__select__text}>
                 <img src={user} alt="User" />
-                <span>Выбор автора</span>
+                <span> {filterByAuthor || "Все авторы"}</span>
               </div>
               <img
                 src={chevron}
@@ -84,39 +108,44 @@ export const Main = () => {
             </div>
             {isSelectOpen && (
               <div className={styles.author__select__dropdown}>
-                <div
-                  className={styles.author__select__option}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Автор 1
-                </div>
-                <div
-                  className={styles.author__select__option}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Автор 2
-                </div>
-                <div
-                  className={styles.author__select__option}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Автор 3
-                </div>
+                {authors.map((author) => (
+                  <div
+                    key={author}
+                    className={styles.author__select__option}
+                    onClick={handleFilterByAuthor(author)}
+                  >
+                    {author}
+                  </div>
+                ))}
               </div>
             )}
           </div>
           <div className={styles.range__inputs}>
             <div className={styles.range__input}>
-              <input placeholder="От" type="text" />
+              <input
+                type="date"
+                placeholder="От"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+              />
             </div>
             —
             <div className={styles.range__input}>
-              <input placeholder="До" type="text" />
+              <input
+                type="date"
+                placeholder="До"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+              />
             </div>
           </div>
         </div>
       </div>
-      <Cards />
+      <Cards
+        filterByAuthor={filterByAuthor}
+        dateFrom={dateFrom}
+        dateTo={dateTo}
+      />
     </main>
   );
 };
